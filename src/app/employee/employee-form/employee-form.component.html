@@ -1,6 +1,5 @@
 <div
   class="modal fade"
-  [ngClass]="visible ? 'show' : ''"
   id="employeeModal"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
@@ -24,14 +23,58 @@
       <form [formGroup]="employeInformationForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
           <div class="mb-3">
+            <label for="email" class="form-label">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="firstName?.touched && firstName?.errors?.['required'] ? 'is-invalid' : ''"
+              id="firstName"
+              value="{{ employeInformation?.firstName || '' }}"
+              formControlName="firstName"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="lastName?.touched && lastName?.errors?.['required'] ? 'is-invalid' : ''"
+              id="lastName"
+              value="{{ employeInformation?.lastName || '' }}"
+              formControlName="lastName"
+            />
+          </div>
+          <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
             <input
               type="email"
               class="form-control"
+              [ngClass]="email?.touched && email?.errors?.['required'] ? 'is-invalid' : ''"
               id="email"
-              placeholder="name@example.com"
               value="{{ employeInformation?.email || '' }}"
               formControlName="email"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="contactNumber" class="form-label">Contact Number</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="contactNumber?.touched && contactNumber?.errors?.['required'] ? 'is-invalid' : ''"
+              id="contactNumber"
+              value="{{ employeInformation?.contactNumber || '' }}"
+              formControlName="contactNumber"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="salary" class="form-label">Salary</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="salary?.touched && salary?.errors?.['required'] ? 'is-invalid' : ''"
+              id="salary"
+              value="{{ employeInformation?.salary || '' }}"
+              formControlName="salary"
             />
           </div>
         </div>
@@ -47,6 +90,7 @@
             type="submit"
             class="btn"
             [ngClass]="type === 'add' ? 'btn-success' : 'btn-info'"
+            [disabled]="employeInformationForm.invalid"
           >
             {{ type === "add" ? "Add" : "Update" }}
           </button>

@@ -9,28 +9,47 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   @Input() type: string = '';
   @Input() employeInformation: any = {};
-  @Input() visible: boolean = false;
-  setValueOnce: boolean = false;
-
   employeInformationForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
     this.employeInformationForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       email: ['', Validators.required],
+      contactNumber: ['', Validators.required],
+      salary: ['', Validators.required],
     });
   }
 
   ngAfterContentChecked(): void {
     if (this.type === 'add') this.employeInformation = {};
-    if (this.type === 'edit' && !this.setValueOnce) {
-      this.setValueOnce = true;
-      this.employeInformationForm.patchValue(this.employeInformation);
-    }
   }
 
   ngOnInit(): void {}
 
   onSubmit(): void {
-    console.log(this.employeInformationForm.value);
+    if (!this.employeInformationForm.invalid) {
+      console.log(this.employeInformationForm);
+    }
+  }
+
+  get firstName() {
+    return this.employeInformationForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.employeInformationForm.get('lastName');
+  }
+
+  get email() {
+    return this.employeInformationForm.get('email');
+  }
+
+  get contactNumber() {
+    return this.employeInformationForm.get('contactNumber');
+  }
+
+  get salary() {
+    return this.employeInformationForm.get('salary');
   }
 }
