@@ -10,7 +10,7 @@ export class AppComponent {
   type: string = '';
   employeInformation: any = {};
 
-  openModal(): void {
+  addModal(): void {
     this.type = 'add';
   }
 

@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   @Input() type: string = '';
   @Input() employeInformation: any = {};
+  @Input() visible: boolean = false;
   setValueOnce: boolean = false;
 
   employeInformationForm: FormGroup;
@@ -27,11 +28,9 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  ngOnInit(): void {
-    console.log('test');
-  }
+  ngOnInit(): void {}
 
-  onSubmit() {
+  onSubmit(): void {
     console.log(this.employeInformationForm.value);
   }
 }
