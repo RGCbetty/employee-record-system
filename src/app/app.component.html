@@ -1,9 +1,24 @@
-<!-- Button trigger modal -->
 <button
   type="button"
   class="btn btn-primary"
   data-bs-toggle="modal"
-  data-bs-target="#staticBackdrop"
+  data-bs-target="#employeeModal"
+  (click)="openModal()"
 >
-  Launch static backdrop modal
+  Add Employee
 </button>
+
+<button
+  type="button"
+  class="btn btn-info"
+  data-bs-toggle="modal"
+  data-bs-target="#employeeModal"
+  (click)="editModal()"
+>
+  Edit Employee
+</button>
+
+<app-employee-form
+  [type]="type"
+  [employeInformation]="employeInformation"
+></app-employee-form>

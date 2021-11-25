@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { EmployeeModalComponent } from './employee/employee-modal/employee-modal.component';
+import { EmployeeFormComponent } from './employee/employee-form/employee-form.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    EmployeeModalComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [AppComponent, EmployeeFormComponent],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
