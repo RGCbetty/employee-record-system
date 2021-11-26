@@ -11,6 +11,7 @@ export class EmployeeDashboardComponent implements OnInit {
   employees: IEmployee[] = [];
   employee!: IEmployee;
   type: string = '';
+  search: string = '';
   setValueOnce: boolean = false;
 
   constructor(private apiService: ApiService, private toastr: ToastrService) {}
@@ -44,5 +45,18 @@ export class EmployeeDashboardComponent implements OnInit {
 
   onSetValueOnce(event: boolean): void {
     this.setValueOnce = event;
+  }
+
+  onSearch(): void {
+    if (!this.search) {
+      this.getEmployee();
+    } else {
+      this.employees = this.employees.filter(
+        (employee) =>
+          employee.firstName.toLocaleLowerCase().includes(this.search) ||
+          employee.lastName.toLocaleLowerCase().includes(this.search) ||
+          employee.email.toLocaleLowerCase().includes(this.search)
+      );
+    }
   }
 }

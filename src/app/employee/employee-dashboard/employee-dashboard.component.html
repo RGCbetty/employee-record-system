@@ -13,47 +13,63 @@
     </div>
   </div>
 </nav>
-<table class="table mt-3">
-  <thead>
-    <tr>
-      <th scope="col">Employee ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email ID</th>
-      <th scope="col">Mobile No.</th>
-      <th scope="col">Salary</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let employee of employees">
-      <td>{{ employee.id }}</td>
-      <td>{{ employee.firstName }}</td>
-      <td>{{ employee.lastName }}</td>
-      <td>{{ employee.email }}</td>
-      <td>{{ employee.contactNumber }}</td>
-      <td>{{ employee.salary }}</td>
-      <td>
-        <button
-          class="btn btn-info"
-          data-bs-toggle="modal"
-          data-bs-target="#employeeModal"
-          (click)="openModal('edit', employee)"
-        >
-          Edit
-        </button>
-        <button
-          class="btn btn-danger mx-3"
-          data-bs-toggle="modal"
-          data-bs-target="#employeeModal"
-          (click)="openModal('delete', employee)"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="row m-3">
+  <div class="mb-3">
+    <div class="mb-3 pull-right">
+      <label for="email" class="form-label">Search Employee:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        [(ngModel)]="search"
+        (ngModelChange)="onSearch()"
+      />
+    </div>
+  </div>
+  <div class="mb-3">
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th scope="col">Employee ID</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Email ID</th>
+          <th scope="col">Mobile No.</th>
+          <th scope="col">Salary</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.id }}</td>
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.contactNumber }}</td>
+          <td>{{ employee.salary }}</td>
+          <td>
+            <button
+              class="btn btn-info"
+              data-bs-toggle="modal"
+              data-bs-target="#employeeModal"
+              (click)="openModal('edit', employee)"
+            >
+              Edit
+            </button>
+            <button
+              class="btn btn-danger mx-3"
+              data-bs-toggle="modal"
+              data-bs-target="#employeeModal"
+              (click)="openModal('delete', employee)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <app-employee-form
   [type]="type"
   [employee]="employee"
