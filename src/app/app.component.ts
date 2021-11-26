@@ -7,17 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'employee-record-system';
-  type: string = '';
-  employeInformation: any = {};
-
-  addModal(): void {
-    this.type = 'add';
-  }
-
-  editModal(): void {
-    this.type = 'edit';
-    this.employeInformation = {
-      email: 'adrian.calma@yahoo.com',
-    };
-  }
 }
