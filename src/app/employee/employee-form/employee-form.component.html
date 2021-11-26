@@ -102,6 +102,7 @@
             type="submit"
             class="btn"
             [ngClass]="type === 'add' ? 'btn-success' : 'btn-info'"
+            data-bs-dismiss="modal"
             [disabled]="employeInformationForm.invalid"
           >
             {{ type === "add" ? "Add" : "Update" }}
@@ -116,12 +117,17 @@
           </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
             No
           </button>
           <button
             type="button"
             class="btn btn-danger"
+            data-bs-dismiss="modal"
             (click)="onDelete(employee.id)"
           >
             Yes

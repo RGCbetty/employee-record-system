@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IEmployee } from '../employee';
-import { v4 as uuidv4 } from 'uuid';
 import { ApiService } from 'src/app/shared/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-employee-form',
@@ -28,11 +28,13 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   };
   @Input() setValueOnce: boolean = false;
   @Output() onSetValueOnce: EventEmitter<boolean> = new EventEmitter();
+  @Output() onEmployee: EventEmitter<any> = new EventEmitter();
 
   employeInformationForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastr: ToastrService
   ) {
     this.employeInformationForm = this.formBuilder.group({
       id: [''],
@@ -64,9 +66,12 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
           .postEmployee(this.employeInformationForm.value)
           .subscribe({
             next: (response) => {
-              console.log(response);
+              this.toastr.success('Successfully Added', 'Success');
+              this.onEmployee.emit();
             },
-            error: (err) => console.error(err),
+            error: (err) => {
+              this.toastr.error(err, 'Error');
+            },
           });
       }
       if (this.type === 'edit') {
@@ -74,9 +79,12 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
           .updateEmployee(this.employeInformationForm.value)
           .subscribe({
             next: (response) => {
-              console.log(response);
+              this.toastr.success('Successfully Updated', 'Success');
+              this.onEmployee.emit();
             },
-            error: (err) => console.error(err),
+            error: (err) => {
+              this.toastr.error(err, 'Error');
+            },
           });
       }
     }
@@ -85,9 +93,12 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   onDelete(id: string): void {
     this.apiService.deleteEmployee(id).subscribe({
       next: (response) => {
-        console.log(response);
+        this.toastr.success('Successfully Deleted', 'Success');
+        this.onEmployee.emit();
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        this.toastr.error(err, 'Error');
+      },
     });
   }
 

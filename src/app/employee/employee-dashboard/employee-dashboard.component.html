@@ -57,6 +57,7 @@
 <app-employee-form
   [type]="type"
   [employee]="employee"
+  (onEmployee)="onEmployee()"
   (onSetValueOnce)="onSetValueOnce($event)"
   [setValueOnce]="setValueOnce"
 ></app-employee-form>
