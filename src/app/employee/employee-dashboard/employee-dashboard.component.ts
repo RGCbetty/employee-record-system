@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/shared/api.service';
 import { IEmployee } from '../employee';
 
 @Component({
@@ -12,25 +13,15 @@ export class EmployeeDashboardComponent implements OnInit {
   type: string = '';
   setValueOnce: boolean = false;
 
+  constructor(private apiService: ApiService) {}
+
   ngOnInit(): void {
-    this.employees = [
-      {
-        id: '1',
-        firstName: 'adrian',
-        lastName: 'calma',
-        email: 'adrian.calma@yahoo.com',
-        contactNumber: '1111111',
-        salary: '111',
+    this.apiService.getEmployee().subscribe({
+      next: (response) => {
+        this.employees = response;
       },
-      {
-        id: '2',
-        firstName: 'adrian2',
-        lastName: 'calma2',
-        email: 'adrian.calma@yahoo.com2',
-        contactNumber: '11111112',
-        salary: '1112',
-      },
-    ];
+      error: (err) => console.error(err),
+    });
   }
 
   openModal(type: string, employee?: any): void {

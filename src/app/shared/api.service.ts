@@ -1,37 +1,53 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { IEmployee } from '../employee/employee';
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
+  private url = 'http://localhost:3000';
   constructor(private http: HttpClient) {}
-  postEmployee(data: any) {
-    return this.http.post<any>('http://localhost:3000/posts', data).pipe(
-      map((res: any) => {
-        return res;
-      })
+  getEmployee(): Observable<IEmployee[]> {
+    return this.http.get<IEmployee[]>(`${this.url}/employees`).pipe(
+      tap((data) => console.log('All', JSON.stringify(data))),
+      catchError(this.handleError)
     );
   }
-  getEmployee(data: any) {
-    return this.http.get<any>('http://localhost:3000/posts', data).pipe(
-      map((res: any) => {
-        return res;
-      })
+
+  postEmployee(employee: IEmployee): Observable<IEmployee> {
+    return this.http.post<IEmployee>(`${this.url}/employees`, employee).pipe(
+      tap((data) => console.log('All', JSON.stringify(data))),
+      catchError(this.handleError)
     );
   }
-  updateEmployee(data: any, id: number) {
-    return this.http.post<any>('http://localhost:3000/posts' + id, data).pipe(
-      map((res: any) => {
-        return res;
-      })
+
+  updateEmployee(employee: IEmployee): Observable<IEmployee> {
+    return this.http
+      .put<IEmployee>(`${this.url}/employees/${employee.id}`, employee)
+      .pipe(
+        tap((data) => console.log('All', JSON.stringify(data))),
+        catchError(this.handleError)
+      );
+  }
+
+  deleteEmployee(id: string): Observable<string> {
+    return this.http.delete<string>(`${this.url}/employees/${id}`).pipe(
+      tap((data) => console.log('All', JSON.stringify(data))),
+      catchError(this.handleError)
     );
   }
-  deleteEmployee(id: number) {
-    return this.http.delete<any>('http://localhost:3000/posts' + id).pipe(
-      map((res: any) => {
-        return res;
-      })
-    );
+
+  private handleError(err: HttpErrorResponse) {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+    }
+
+    console.error(errorMessage);
+    return throwError(() => errorMessage);
   }
 }

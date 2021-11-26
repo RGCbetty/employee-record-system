@@ -9,6 +9,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IEmployee } from '../employee';
 import { v4 as uuidv4 } from 'uuid';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -29,7 +30,10 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   @Output() onSetValueOnce: EventEmitter<boolean> = new EventEmitter();
 
   employeInformationForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private apiService: ApiService
+  ) {
     this.employeInformationForm = this.formBuilder.group({
       id: [''],
       firstName: ['', Validators.required],
@@ -56,16 +60,35 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   onSubmit(): void {
     if (!this.employeInformationForm.invalid) {
       if (this.type === 'add') {
-        console.log({ id: uuidv4(), ...this.employeInformationForm.value });
+        this.apiService
+          .postEmployee(this.employeInformationForm.value)
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+            },
+            error: (err) => console.error(err),
+          });
       }
       if (this.type === 'edit') {
-        console.log(this.employeInformationForm.value);
+        this.apiService
+          .updateEmployee(this.employeInformationForm.value)
+          .subscribe({
+            next: (response) => {
+              console.log(response);
+            },
+            error: (err) => console.error(err),
+          });
       }
     }
   }
 
   onDelete(id: string): void {
-    console.log(id);
+    this.apiService.deleteEmployee(id).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   onClose(): void {
