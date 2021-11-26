@@ -1,5 +1,14 @@
-import { AfterContentChecked, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IEmployee } from '../employee';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-employee-form',
@@ -8,11 +17,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   @Input() type: string = '';
-  @Input() employeInformation: any = {};
-  employeInformationForm: FormGroup;
+  @Input() employee: IEmployee = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    contactNumber: '',
+    salary: '',
+  };
+  @Input() setValueOnce: boolean = false;
+  @Output() onSetValueOnce: EventEmitter<boolean> = new EventEmitter();
 
+  employeInformationForm: FormGroup;
   constructor(private formBuilder: FormBuilder) {
     this.employeInformationForm = this.formBuilder.group({
+      id: [''],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
@@ -22,15 +41,36 @@ export class EmployeeFormComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked(): void {
-    if (this.type === 'add') this.employeInformation = {};
+    if (this.setValueOnce) {
+      setTimeout(() => {
+        this.onSetValueOnce.emit(false);
+      }, 100);
+      if (this.type === 'add') this.employeInformationForm.reset();
+      if (this.type === 'edit')
+        this.employeInformationForm.setValue(this.employee);
+    }
   }
 
   ngOnInit(): void {}
 
   onSubmit(): void {
     if (!this.employeInformationForm.invalid) {
-      console.log(this.employeInformationForm);
+      if (this.type === 'add') {
+        console.log({ id: uuidv4(), ...this.employeInformationForm.value });
+      }
+      if (this.type === 'edit') {
+        console.log(this.employeInformationForm.value);
+      }
     }
+  }
+
+  onDelete(id: string): void {
+    console.log(id);
+  }
+
+  onClose(): void {
+    this.employeInformationForm.reset();
+    this.onSetValueOnce.emit(false);
   }
 
   get firstName() {

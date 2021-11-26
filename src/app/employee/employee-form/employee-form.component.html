@@ -18,10 +18,21 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="onClose()"
         ></button>
       </div>
-      <form [formGroup]="employeInformationForm" (ngSubmit)="onSubmit()">
+      <form
+        [formGroup]="employeInformationForm"
+        (ngSubmit)="onSubmit()"
+        *ngIf="type !== 'delete'"
+      >
         <div class="modal-body">
+          <input
+            type="hidden"
+            id="id"
+            formControlName="id"
+            value="{{ employee?.id || '' }}"
+          />
           <div class="mb-3">
             <label for="email" class="form-label">First Name</label>
             <input
@@ -29,7 +40,7 @@
               class="form-control"
               [ngClass]="firstName?.touched && firstName?.errors?.['required'] ? 'is-invalid' : ''"
               id="firstName"
-              value="{{ employeInformation?.firstName || '' }}"
+              value="{{ employee?.firstName || '' }}"
               formControlName="firstName"
             />
           </div>
@@ -40,7 +51,7 @@
               class="form-control"
               [ngClass]="lastName?.touched && lastName?.errors?.['required'] ? 'is-invalid' : ''"
               id="lastName"
-              value="{{ employeInformation?.lastName || '' }}"
+              value="{{ employee?.lastName || '' }}"
               formControlName="lastName"
             />
           </div>
@@ -51,7 +62,7 @@
               class="form-control"
               [ngClass]="email?.touched && email?.errors?.['required'] ? 'is-invalid' : ''"
               id="email"
-              value="{{ employeInformation?.email || '' }}"
+              value="{{ employee?.email || '' }}"
               formControlName="email"
             />
           </div>
@@ -62,7 +73,7 @@
               class="form-control"
               [ngClass]="contactNumber?.touched && contactNumber?.errors?.['required'] ? 'is-invalid' : ''"
               id="contactNumber"
-              value="{{ employeInformation?.contactNumber || '' }}"
+              value="{{ employee?.contactNumber || '' }}"
               formControlName="contactNumber"
             />
           </div>
@@ -73,7 +84,7 @@
               class="form-control"
               [ngClass]="salary?.touched && salary?.errors?.['required'] ? 'is-invalid' : ''"
               id="salary"
-              value="{{ employeInformation?.salary || '' }}"
+              value="{{ employee?.salary || '' }}"
               formControlName="salary"
             />
           </div>
@@ -83,6 +94,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            (click)="onClose()"
           >
             Close
           </button>
@@ -96,6 +108,23 @@
           </button>
         </div>
       </form>
+      <div id="delete" *ngIf="type === 'delete'">
+        <div class="modal-body">
+          <p>Are you sure you want to delete this record?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            No
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="onDelete(employee.id)"
+          >
+            Yes
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

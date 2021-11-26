@@ -6,7 +6,7 @@
         class="btn btn-success"
         data-bs-toggle="modal"
         data-bs-target="#employeeModal"
-        (click)="addModal()"
+        (click)="openModal('add')"
       >
         Add Employee
       </button>
@@ -26,18 +26,37 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>123</td>
-      <td>123</td>
-      <td>123</td>
-      <td>1234</td>
-      <td>12345</td>
-      <td>1234566</td>
+    <tr *ngFor="let employee of employees">
+      <td>{{ employee.id }}</td>
+      <td>{{ employee.firstName }}</td>
+      <td>{{ employee.lastName }}</td>
+      <td>{{ employee.email }}</td>
+      <td>{{ employee.contactNumber }}</td>
+      <td>{{ employee.salary }}</td>
       <td>
-        <button class="btn btn-info">Edit</button>
-        <button class="btn btn-danger mx-3">Delete</button>
+        <button
+          class="btn btn-info"
+          data-bs-toggle="modal"
+          data-bs-target="#employeeModal"
+          (click)="openModal('edit', employee)"
+        >
+          Edit
+        </button>
+        <button
+          class="btn btn-danger mx-3"
+          data-bs-toggle="modal"
+          data-bs-target="#employeeModal"
+          (click)="openModal('delete', employee)"
+        >
+          Delete
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
-<app-employee-form [type]="type"></app-employee-form>
+<app-employee-form
+  [type]="type"
+  [employee]="employee"
+  (onSetValueOnce)="onSetValueOnce($event)"
+  [setValueOnce]="setValueOnce"
+></app-employee-form>
